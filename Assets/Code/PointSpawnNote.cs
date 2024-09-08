@@ -6,9 +6,9 @@ using UnityEngine;
 public class PointSpawnNote : MonoBehaviour
 {
     [SerializeField] NoteMovement note;
-
-    public float minSpawnTime = 1f; // Waktu minimum antara spawn
-    public float maxSpawnTime = 10f; // Waktu maksimum antara spawn
+    [SerializeField] LinePath linePath;
+    private float minSpawnTime = 1f; // Waktu minimum antara spawn
+    private float maxSpawnTime = 7f; // Waktu maksimum antara spawn
     private float timeToNextSpawn;
     private float elapsedTime;
 
@@ -56,6 +56,13 @@ public class PointSpawnNote : MonoBehaviour
             Vector2 anchoredPosition = rectTransform.anchoredPosition;
             anchoredPosition.x = 0;
             rectTransform.anchoredPosition = anchoredPosition;
+        }
+
+        // Berikan LinePath kepada note yang baru di-spawn
+        NoteMovement noteMovement = spawnedNote.GetComponent<NoteMovement>();
+        if (noteMovement != null && linePath != null)
+        {
+            noteMovement.SetLinePath(linePath);
         }
     }
 }

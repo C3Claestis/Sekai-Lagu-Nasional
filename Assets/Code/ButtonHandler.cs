@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    public NoteTag noteTag = NoteTag.NoteUp; // Pilih tag untuk note dari enum
-
-    float allowedDistance = 15f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
+    [SerializeField] NoteTag noteTag = NoteTag.NoteUp; // Pilih tag untuk note dari enum
+    [SerializeField] GameManager gameManager;
+    private float allowedDistance = 100f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
 
     private List<RectTransform> noteTransforms = new List<RectTransform>(); // List untuk menampung RectTransform dari semua note
 
@@ -49,6 +48,7 @@ public class ButtonHandler : MonoBehaviour
             if (Vector3.Distance(noteTransform.position, GetComponent<RectTransform>().position) <= allowedDistance)
             {
                 Debug.Log("Perfect Hit!");
+                gameManager.SetIndexScore(10);
                 Destroy(noteTransform.gameObject); // Hancurkan note yang sesuai
                 notesToRemove.Add(noteTransform); // Tandai untuk dihapus dari list
             }
