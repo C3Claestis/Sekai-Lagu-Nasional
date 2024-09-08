@@ -6,7 +6,7 @@ public class ButtonHandler : MonoBehaviour
 {
     public NoteTag noteTag = NoteTag.NoteUp; // Pilih tag untuk note dari enum
 
-    float allowedDistance = 100f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
+    float allowedDistance = 15f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
 
     private List<RectTransform> noteTransforms = new List<RectTransform>(); // List untuk menampung RectTransform dari semua note
 
