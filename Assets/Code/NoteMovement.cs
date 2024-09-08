@@ -15,5 +15,11 @@ public class NoteMovement : MonoBehaviour
     {
         // Gerakkan note ke bawah sepanjang sumbu Y
         rectTransform.anchoredPosition += Vector2.down * speed * Time.deltaTime;
+
+        // Cek apakah note telah keluar dari canvas atau posisi Y kurang dari -2000
+        if (rectTransform.anchoredPosition.y < -2000)
+        {
+            Destroy(gameObject); // Hancurkan objek
+        }
     }
 }

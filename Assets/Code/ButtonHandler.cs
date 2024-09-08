@@ -38,19 +38,33 @@ public class ButtonHandler : MonoBehaviour
             return;
         }
 
+        // Simpan referensi note yang akan dihapus
+        List<RectTransform> notesToRemove = new List<RectTransform>();
+
         // Cek apakah posisi note hampir sama dengan posisi button
         foreach (RectTransform noteTransform in noteTransforms)
         {
+            if (noteTransform == null) continue; // Lewati jika noteTransform sudah dihapus
+
             if (Vector3.Distance(noteTransform.position, GetComponent<RectTransform>().position) <= allowedDistance)
             {
                 Debug.Log("Perfect Hit!");
-                // Tambahkan logika untuk menghitung skor atau efek lainnya
-                return; // Keluar dari loop setelah menemukan hit yang sempurna
+                Destroy(noteTransform.gameObject); // Hancurkan note yang sesuai
+                notesToRemove.Add(noteTransform); // Tandai untuk dihapus dari list
             }
         }
 
-        Debug.Log("Miss!");
-        // Logika jika gagal
+        // Hapus note yang ditandai setelah loop selesai
+        foreach (RectTransform noteTransform in notesToRemove)
+        {
+            noteTransforms.Remove(noteTransform);
+        }
+
+        if (notesToRemove.Count == 0)
+        {
+            Debug.Log("Miss!");
+            // Logika jika gagal
+        }
     }
 
     // Method untuk menggambarkan cakupan area dengan Gizmos
