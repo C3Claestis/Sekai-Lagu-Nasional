@@ -28,12 +28,6 @@ public class PointSpawnNote : MonoBehaviour
             SpawnNote();
             ScheduleNextSpawn(); // Jadwalkan spawn berikutnya
         }
-
-        // Spawn note jika tombol P ditekan
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SpawnNote();
-        }
     }
 
     void ScheduleNextSpawn()

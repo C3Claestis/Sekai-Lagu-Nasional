@@ -1,31 +1,5 @@
-// using UnityEngine;
-
-// public class NoteMovement : MonoBehaviour
-// {
-//     public float speed = 300f; // Kecepatan note bergerak ke bawah (dalam satuan pixel per detik)
-//     private RectTransform rectTransform;
-
-//     void Start()
-//     {
-//         rectTransform = GetComponent<RectTransform>();
-//     }
-
-//     // Update is called once per frame
-//     void Update()
-//     {
-//         // Gerakkan note ke bawah sepanjang sumbu Y
-//         rectTransform.anchoredPosition += Vector2.down * speed * Time.deltaTime;
-
-//         // Cek apakah note telah keluar dari canvas atau posisi Y kurang dari -2000
-//         if (rectTransform.anchoredPosition.y < -2000)
-//         {
-//             Destroy(gameObject); // Hancurkan objek
-//         }
-//     }
-// }
-
 using UnityEngine;
-
+using System.Collections;
 public class NoteMovement : MonoBehaviour
 {
     public float speed = 300f; // Kecepatan note bergerak di sepanjang jalur (satuan pixel per detik)
@@ -66,11 +40,7 @@ public class NoteMovement : MonoBehaviour
             // Gerakkan note ke bawah sepanjang sumbu Y
             rectTransform.anchoredPosition += Vector2.down * speed * Time.deltaTime;
 
-            // Cek apakah note telah keluar dari canvas atau posisi Y kurang dari -2000
-            if (rectTransform.anchoredPosition.y < -2000)
-            {
-                Destroy(gameObject); // Hancurkan objek
-            }
+            StartCoroutine(DestroyAfterDelay(5f));
             return;
         }
 
@@ -83,14 +53,13 @@ public class NoteMovement : MonoBehaviour
         {
             currentPointIndex++; // Pindah ke titik berikutnya
         }
-
-        // Cek apakah note telah keluar dari canvas atau posisi Y kurang dari -2000
-        if (rectTransform.anchoredPosition.y < -2000)
-        {
-            Destroy(gameObject); // Hancurkan objek
-        }
     }
-
+    // Coroutine untuk menunggu 5 detik sebelum menghancurkan objek
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Tunggu selama 5 detik
+        Destroy(gameObject); // Hancurkan objek
+    }
     // Fungsi untuk mengatur LinePath
     public void SetLinePath(LinePath linePath)
     {
