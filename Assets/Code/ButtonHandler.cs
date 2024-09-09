@@ -5,7 +5,7 @@ public class ButtonHandler : MonoBehaviour
 {
     [SerializeField] NoteTag noteTag = NoteTag.NoteUp; // Pilih tag untuk note dari enum
     [SerializeField] GameManager gameManager;
-    private float allowedDistance = 100f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
+    private float allowedDistance = 80f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
 
     private List<RectTransform> noteTransforms = new List<RectTransform>(); // List untuk menampung RectTransform dari semua note
 
