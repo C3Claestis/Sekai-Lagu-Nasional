@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
             //Mulai mencari semua note yang tersisa
             SearchNote();
 
-             // Jika semua note telah dihancurkan dan belum selesai
+            // Jika semua note telah dihancurkan dan belum selesai
             if (noteMovements.Count == 0)
             {
                 ShowFinishUI();
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     }
     void SearchNote()
     {
-       // Cari semua objek di scene yang memiliki komponen NoteMovement
+        // Cari semua objek di scene yang memiliki komponen NoteMovement
         NoteMovement[] foundNotes = FindObjectsOfType<NoteMovement>();
 
         // Tambahkan ke dalam list jika belum ada
@@ -68,6 +68,15 @@ public class GameManager : MonoBehaviour
         }
         // Hapus note yang sudah dihancurkan dari list
         noteMovements.RemoveAll(note => note == null);
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void SetIndexScore(int index) => indexScore += index;
 }
