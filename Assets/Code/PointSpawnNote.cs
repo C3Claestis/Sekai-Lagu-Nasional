@@ -11,7 +11,7 @@ public class PointSpawnNote : MonoBehaviour
     private float maxSpawnTime = 7f; // Waktu maksimum antara spawn
     private float timeToNextSpawn;
     private float elapsedTime;
-
+    private bool isPlaying = true;
     void Start()
     {
         // Jadwalkan spawn pertama kali
@@ -23,7 +23,7 @@ public class PointSpawnNote : MonoBehaviour
         elapsedTime += Time.deltaTime;
 
         // Cek jika waktu sudah tiba untuk spawn
-        if (elapsedTime >= timeToNextSpawn)
+        if (elapsedTime >= timeToNextSpawn && isPlaying)
         {
             SpawnNote();
             ScheduleNextSpawn(); // Jadwalkan spawn berikutnya
@@ -59,4 +59,6 @@ public class PointSpawnNote : MonoBehaviour
             noteMovement.SetLinePath(linePath);
         }
     }
+
+    public bool SetIsPlaying(bool playing) => this.isPlaying = playing;
 }
