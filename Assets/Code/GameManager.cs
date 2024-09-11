@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI score;
+    [SerializeField] TextMeshProUGUI score, finishScore;
     [SerializeField] AudioSource musicSource; // Tambahkan reference ke AudioSource
     [SerializeField] PointSpawnNote[] pointSpawnNote;
     [SerializeField] GameObject panel_finish;
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         score.text = "Score : " + indexScore.ToString();
-
+        finishScore.text = indexScore.ToString();
         // Cek jika musik masih berjalan dan array pointSpawnNote sudah terisi
         if (musicSource != null && !musicSource.isPlaying && pointSpawnNote != null && pointSpawnNote.Length > 0)
         {

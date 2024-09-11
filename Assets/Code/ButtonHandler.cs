@@ -7,12 +7,18 @@ public class ButtonHandler : MonoBehaviour
     [SerializeField] NoteTag noteTag = NoteTag.NoteUp; // Pilih tag untuk note dari enum
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject Miss, Perfect, Great, Good;
+    [SerializeField] AudioClip sfx, sfxWrong;
     private float PerfectDistance = 20f; // Jarak toleransi (dalam satuan pixel) untuk Perfect
     private float GreatDistance = 40f;   // Jarak untuk Great
     private float GoodDistance = 80f;    // Jarak untuk Good
     private float MissDistance = 120f;   // Jarak untuk Miss
     private List<RectTransform> noteTransforms = new List<RectTransform>(); // List untuk menampung RectTransform dari semua note
 
+    AudioSource audioSource;
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     void Update()
     {
         // Mencari semua GameObject dengan tag yang dipilih dan menambahkannya ke dalam list jika belum ada
@@ -54,6 +60,7 @@ public class ButtonHandler : MonoBehaviour
             if (distance <= PerfectDistance)
             {
                 Debug.Log("Perfect Hit!");
+                audioSource.PlayOneShot(sfx);
                 gameManager.SetIndexScore(10);
                 Destroy(noteTransform.gameObject); // Hancurkan note yang sesuai
                 notesToRemove.Add(noteTransform); // Tandai untuk dihapus dari list
@@ -62,6 +69,7 @@ public class ButtonHandler : MonoBehaviour
             else if (distance <= GreatDistance)
             {
                 Debug.Log("Great Hit!");
+                audioSource.PlayOneShot(sfx);
                 gameManager.SetIndexScore(7);
                 Destroy(noteTransform.gameObject);
                 notesToRemove.Add(noteTransform);
@@ -70,6 +78,7 @@ public class ButtonHandler : MonoBehaviour
             else if (distance <= GoodDistance)
             {
                 Debug.Log("Good Hit!");
+                audioSource.PlayOneShot(sfx);
                 gameManager.SetIndexScore(5);
                 Destroy(noteTransform.gameObject);
                 notesToRemove.Add(noteTransform);
@@ -78,6 +87,7 @@ public class ButtonHandler : MonoBehaviour
             else if (distance <= MissDistance)
             {
                 Debug.Log("Miss!");
+                audioSource.PlayOneShot(sfxWrong);
                 gameManager.SetIndexScore(0);
                 Destroy(noteTransform.gameObject);
                 notesToRemove.Add(noteTransform);

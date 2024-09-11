@@ -5,15 +5,18 @@ using UnityEngine.SceneManagement;
 public class ManagerMainMenu : MonoBehaviour
 {
     [SerializeField] GameObject panel_start, button_manager;
-   
+    [SerializeField] AudioClip sfx;
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>(); 
         ClosePanelStart();
     }
 
     public void OpenPanelStart()
     {
+        audioSource.PlayOneShot(sfx);
         panel_start.SetActive(true);
         button_manager.SetActive(false);
     }
@@ -24,6 +27,7 @@ public class ManagerMainMenu : MonoBehaviour
     }
     public void StartGame(int scene)
     {
+        audioSource.PlayOneShot(sfx);
         SceneManager.LoadScene(scene);
         Time.timeScale = 1;
     }
