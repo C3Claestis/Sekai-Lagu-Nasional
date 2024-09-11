@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,8 +6,11 @@ public class ButtonHandler : MonoBehaviour
 {
     [SerializeField] NoteTag noteTag = NoteTag.NoteUp; // Pilih tag untuk note dari enum
     [SerializeField] GameManager gameManager;
-    private float allowedDistance = 80f; // Jarak toleransi (dalam satuan pixel) untuk menentukan apakah note berada di posisi yang tepat
-
+    [SerializeField] GameObject Miss, Perfect, Great, Good;
+    private float PerfectDistance = 20f; // Jarak toleransi (dalam satuan pixel) untuk Perfect
+    private float GreatDistance = 40f;   // Jarak untuk Great
+    private float GoodDistance = 80f;    // Jarak untuk Good
+    private float MissDistance = 120f;   // Jarak untuk Miss
     private List<RectTransform> noteTransforms = new List<RectTransform>(); // List untuk menampung RectTransform dari semua note
 
     void Update()
@@ -45,12 +49,39 @@ public class ButtonHandler : MonoBehaviour
         {
             if (noteTransform == null) continue; // Lewati jika noteTransform sudah dihapus
 
-            if (Vector3.Distance(noteTransform.position, GetComponent<RectTransform>().position) <= allowedDistance)
+            float distance = Vector3.Distance(noteTransform.position, GetComponent<RectTransform>().position);
+
+            if (distance <= PerfectDistance)
             {
                 Debug.Log("Perfect Hit!");
                 gameManager.SetIndexScore(10);
                 Destroy(noteTransform.gameObject); // Hancurkan note yang sesuai
                 notesToRemove.Add(noteTransform); // Tandai untuk dihapus dari list
+                StartCoroutine(SpawnNoteEffect(Perfect, 1f));
+            }
+            else if (distance <= GreatDistance)
+            {
+                Debug.Log("Great Hit!");
+                gameManager.SetIndexScore(7);
+                Destroy(noteTransform.gameObject);
+                notesToRemove.Add(noteTransform);
+                StartCoroutine(SpawnNoteEffect(Great, 1f));
+            }
+            else if (distance <= GoodDistance)
+            {
+                Debug.Log("Good Hit!");
+                gameManager.SetIndexScore(5);
+                Destroy(noteTransform.gameObject);
+                notesToRemove.Add(noteTransform);
+                StartCoroutine(SpawnNoteEffect(Good, 1f));
+            }
+            else if (distance <= MissDistance)
+            {
+                Debug.Log("Miss!");
+                gameManager.SetIndexScore(0);
+                Destroy(noteTransform.gameObject);
+                notesToRemove.Add(noteTransform);
+                StartCoroutine(SpawnNoteEffect(Miss, 1f));
             }
         }
 
@@ -59,33 +90,39 @@ public class ButtonHandler : MonoBehaviour
         {
             noteTransforms.Remove(noteTransform);
         }
+    }
 
-        if (notesToRemove.Count == 0)
-        {
-            Debug.Log("Miss!");
-            // Logika jika gagal
-        }
+    IEnumerator SpawnNoteEffect(GameObject effectPrefab, float timingDestroy)
+    {
+        GameObject effectObj = Instantiate(effectPrefab, transform.position, Quaternion.identity);
+        effectObj.transform.SetParent(transform, false);
+        yield return new WaitForSeconds(timingDestroy);
+        Destroy(effectObj);
     }
 
     // Method untuk menggambarkan cakupan area dengan Gizmos
     void OnDrawGizmos()
     {
-        if (noteTransforms.Count > 0)
-        {
-            // Mengatur warna Gizmos
-            Gizmos.color = Color.green;
+        // Menggambar lingkaran untuk setiap jarak dengan warna yang berbeda
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, PerfectDistance); // Perfect
 
-            // Menggambar lingkaran di sekitar posisi button
-            Gizmos.DrawWireSphere(transform.position, allowedDistance);
-        }
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, GreatDistance); // Great
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, GoodDistance); // Good
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, MissDistance); // Miss
     }
 }
 
 // Enum untuk menentukan tag yang tersedia
 public enum NoteTag
 {
-    NoteUp, 
-    NoteDown, 
-    NoteLeft, 
+    NoteUp,
+    NoteDown,
+    NoteLeft,
     NoteRight
 }
